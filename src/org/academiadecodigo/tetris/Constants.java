@@ -17,4 +17,8 @@ public abstract class Constants {
     public static final int LINE_SCORE = 10;
     public static final int LEVEL_SCORE = 100;
     public static final int LEVEL_TIME_INCREASE = 50;
+
+    // Multiplayer
+    public static final int DEFAULT_PORT = 8080;
+    public static final String EVENT_DELIMITER = "//";
 }
