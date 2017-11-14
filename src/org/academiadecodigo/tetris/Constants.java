@@ -21,4 +21,5 @@ public abstract class Constants {
     // Multiplayer
     public static final int DEFAULT_PORT = 8080;
     public static final String EVENT_DELIMITER = "//";
+    public static final int MAX_PLAYERS = 2;
 }

@@ -1,0 +1,10 @@
+package org.academiadecodigo.tetris.server.events;
+
+/**
+ * Created by codecadet on 14/11/2017.
+ */
+public enum GameEventType {
+
+    START_TIMER,
+    GAME_START;
+}
