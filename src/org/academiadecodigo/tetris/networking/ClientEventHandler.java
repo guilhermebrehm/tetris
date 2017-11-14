@@ -16,19 +16,20 @@ public class ClientEventHandler {
         if(!Utils.areNumbers(eventParts)) {
 
             System.out.println("Event is not a number!");
-            return;
         }
 
-        GameEventType gameEventType = GameEventType.values()[Integer.parseInt(eventParts[1])];
+        GameEventType gameEventType = GameEventType.values()[Integer.parseInt(eventParts[0])];
 
         switch (gameEventType) {
 
             case START_TIMER:
 
+                System.out.println("start timer");
                 break;
 
             case GAME_START:
-                
+
+                System.out.println("game start");
                 break;
         }
     }

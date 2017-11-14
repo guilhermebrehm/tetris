@@ -7,6 +7,11 @@ import org.academiadecodigo.tetris.movable.spinnable.block.Block;
 import org.academiadecodigo.tetris.movable.spinnable.block.BlockFactory;
 import org.academiadecodigo.tetris.grid.Grid;
 import org.academiadecodigo.tetris.keyboard_listener.KeyboardListener;
+import org.academiadecodigo.tetris.networking.NetworkThread;
+import org.academiadecodigo.tetris.server.ClientHandler;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Game {
 
@@ -20,13 +25,21 @@ public class Game {
     private boolean end;
     private Text[] overText;
 
+    private Text[] startText;
+
     private Grid grid;
     private Block activeBlock;
 
     private int score;
     private Text scoreText;
 
+    private ExecutorService executorService;
+
     public void init() {
+
+        executorService = Executors.newCachedThreadPool();
+        executorService.submit(new NetworkThread("localhost"));
+
         background = new Rectangle(Constants.PADDING, Constants.PADDING, Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         background.setColor(Constants.BACKGROUND_COLOR);
         background.fill();
@@ -49,6 +62,8 @@ public class Game {
 
         overText[0].grow(overText[0].getWidth() * 3, overText[0].getHeight() * 3);
         overText[1].grow(overText[1].getWidth() * 3, overText[1].getHeight() * 3);
+
+        
 
         grid = new Grid(10, 20);
         activeBlock = BlockFactory.getBlock(grid);

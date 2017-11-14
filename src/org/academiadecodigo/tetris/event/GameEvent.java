@@ -22,6 +22,6 @@ public abstract class GameEvent {
 
     @Override
     public String toString() {
-        return Constants.EVENT_DELIMITER + gameEventType.ordinal();
+        return String.valueOf(gameEventType.ordinal());
     }
 }
