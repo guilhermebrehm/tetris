@@ -1,9 +1,9 @@
 package org.academiadecodigo.tetris.server;
 
 import org.academiadecodigo.tetris.Constants;
-import org.academiadecodigo.tetris.server.events.GameEvent;
-import org.academiadecodigo.tetris.server.events.GameStartEvent;
-import org.academiadecodigo.tetris.server.events.StartTimerEvent;
+import org.academiadecodigo.tetris.event.GameEvent;
+import org.academiadecodigo.tetris.event.GameStartEvent;
+import org.academiadecodigo.tetris.event.StartTimerEvent;
 
 import java.io.IOException;
 import java.net.ServerSocket;

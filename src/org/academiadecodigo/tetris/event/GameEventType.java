@@ -1,4 +1,4 @@
-package org.academiadecodigo.tetris.server.events;
+package org.academiadecodigo.tetris.event;
 
 /**
  * Created by codecadet on 14/11/2017.

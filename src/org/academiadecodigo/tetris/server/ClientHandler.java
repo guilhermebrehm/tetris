@@ -1,6 +1,6 @@
 package org.academiadecodigo.tetris.server;
 
-import org.academiadecodigo.tetris.server.events.GameEvent;
+import org.academiadecodigo.tetris.event.GameEvent;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
