@@ -25,7 +25,7 @@ public class Game {
     private boolean end;
     private Text[] overText;
 
-    private Text[] startText;
+    private Text startText;
 
     private Grid grid;
     private Block activeBlock;
@@ -38,7 +38,11 @@ public class Game {
     public void init() {
 
         executorService = Executors.newCachedThreadPool();
-        executorService.submit(new NetworkThread("localhost"));
+
+        NetworkThread networkThread = NetworkThread.getInstance();
+        networkThread.connect("localhost");
+
+        executorService.submit(networkThread);
 
         background = new Rectangle(Constants.PADDING, Constants.PADDING, Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         background.setColor(Constants.BACKGROUND_COLOR);
@@ -48,6 +52,9 @@ public class Game {
         pausedText.setColor(Color.LIGHT_GRAY);
         pausedText.translate(-pausedText.getWidth() / 2, -pausedText.getHeight() / 2);
         pausedText.grow(pausedText.getWidth() * 3, pausedText.getHeight() * 3);
+
+        startText = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2 - 30, "GAME");
+        startText.setColor(Color.LIGHT_GRAY);
 
         overText = new Text[2];
 
@@ -164,5 +171,9 @@ public class Game {
     public void unPause() {
         pausedText.delete();
         paused = false;
+    }
+
+    public void showStart() {
+        startText.draw();
     }
 }

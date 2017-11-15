@@ -1,5 +1,6 @@
 package org.academiadecodigo.tetris.networking;
 
+import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.event.GameEvent;
 import org.academiadecodigo.tetris.event.GameEventFactory;
 
@@ -66,7 +67,14 @@ public class NetworkThread implements Runnable {
 
     }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public void connect(String ipAddress) {
+
+        try {
+
+            socket = new Socket(ipAddress, Constants.DEFAULT_PORT);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
