@@ -1,10 +1,9 @@
 package org.academiadecodigo.tetris.server;
 
 import org.academiadecodigo.tetris.event.GameEvent;
+import org.academiadecodigo.tetris.event.GameEventFactory;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable{
@@ -19,9 +18,22 @@ public class ClientHandler implements Runnable{
     @Override
     public void run() {
 
-        while(!socket.isClosed()) {
+        try {
 
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+            String str;
+
+            while((str = bufferedReader.readLine()) != null) {
+
+                if(!socket.isClosed()) {
+
+                    Server.getInstance().broadcast(GameEventFactory.getEventByString(str));
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }

@@ -1,8 +1,7 @@
 package org.academiadecodigo.tetris.networking;
 
-import com.sun.deploy.util.SessionState;
-import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.event.GameEvent;
+import org.academiadecodigo.tetris.event.GameEventFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,17 +15,18 @@ import java.net.Socket;
 public class NetworkThread implements Runnable {
 
     private Socket socket;
+    private static NetworkThread networkThread;
 
-    public NetworkThread(String ipAddress) {
+    private NetworkThread(){}
 
-        try {
+    public static NetworkThread getInstance(){
 
-            socket = new Socket(ipAddress, Constants.DEFAULT_PORT);
+        if(networkThread == null) {
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            networkThread = new NetworkThread();
         }
 
+        return networkThread;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class NetworkThread implements Runnable {
 
                 while((str = reader.readLine()) != null) {
 
-                    ClientEventHandler.handleEvent(str);
+                    ClientEventHandler.handleEvent(GameEventFactory.getEventByString(str));
                 }
             }
 
@@ -51,23 +51,22 @@ public class NetworkThread implements Runnable {
 
     }
 
-    public void sendEvent(String event) {
-
-        if(!GameEvent.isEvent(event)) {
-            System.out.println("Message received is not a valid event!");
-            return;
-        }
+    public void sendEvent(GameEvent gameEvent) {
 
         try {
 
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
 
-            writer.write(event);
+            writer.write(gameEvent.toString());
             writer.flush();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
     }
 }

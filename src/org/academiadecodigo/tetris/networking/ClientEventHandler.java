@@ -2,6 +2,7 @@ package org.academiadecodigo.tetris.networking;
 
 import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.Utils;
+import org.academiadecodigo.tetris.event.GameEvent;
 import org.academiadecodigo.tetris.event.GameEventType;
 
 /**
@@ -9,18 +10,9 @@ import org.academiadecodigo.tetris.event.GameEventType;
  */
 public class ClientEventHandler {
 
-    public static void handleEvent(String eventMessage) {
+    public static void handleEvent(GameEvent gameEvent) {
 
-        String[] eventParts = eventMessage.split(Constants.EVENT_DELIMITER);
-
-        if(!Utils.areNumbers(eventParts)) {
-
-            System.out.println("Event is not a number!");
-        }
-
-        GameEventType gameEventType = GameEventType.values()[Integer.parseInt(eventParts[0])];
-
-        switch (gameEventType) {
+        switch (gameEvent.getGameEventType()) {
 
             case START_TIMER:
 
