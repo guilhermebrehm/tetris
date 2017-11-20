@@ -2,6 +2,8 @@ package org.academiadecodigo.tetris.event;
 
 import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.Utils;
+import org.academiadecodigo.tetris.movable.spinnable.block.Block;
+import org.academiadecodigo.tetris.movable.spinnable.block.BlockType;
 
 public class GameEventFactory {
 
@@ -24,6 +26,11 @@ public class GameEventFactory {
             case GAME_START:
 
                 return gameStartEvent();
+
+            case BLOCK_SPAWN:
+
+                BlockType blockType = BlockType.values()[Integer.parseInt(eventParts[1])];
+                return blockSpawnEvent(blockType);
         }
 
         throw new IllegalArgumentException();
@@ -38,5 +45,10 @@ public class GameEventFactory {
     public static GameStartEvent gameStartEvent() {
 
         return new GameStartEvent();
+    }
+
+    public static BlockSpawnEvent blockSpawnEvent(BlockType blockType) {
+
+        return new BlockSpawnEvent(blockType);
     }
 }

@@ -1,76 +1,58 @@
 package org.academiadecodigo.tetris;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
-import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.simplegraphics.graphics.Text;
+import org.academiadecodigo.tetris.event.GameEventFactory;
+import org.academiadecodigo.tetris.gui.HUD;
 import org.academiadecodigo.tetris.movable.spinnable.block.Block;
 import org.academiadecodigo.tetris.movable.spinnable.block.BlockFactory;
 import org.academiadecodigo.tetris.grid.Grid;
 import org.academiadecodigo.tetris.keyboard_listener.KeyboardListener;
+import org.academiadecodigo.tetris.movable.spinnable.block.BlockType;
 import org.academiadecodigo.tetris.networking.NetworkThread;
-import org.academiadecodigo.tetris.server.ClientHandler;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Game {
 
-    private Rectangle background;
-
     private KeyboardListener keyboardListener;
 
     private boolean paused;
-    private Text pausedText;
 
     private boolean end;
-    private Text[] overText;
 
-    private Text startText;
+    private HUD hud;
 
     private Grid grid;
     private Block activeBlock;
 
     private int score;
-    private Text scoreText;
 
-    private ExecutorService executorService;
+    private static Game game;
+
+    private Game() {}
+
+    public static Game getInstance() {
+
+        if(game == null) {
+
+            game = new Game();
+        }
+
+        return game;
+    }
 
     public void init() {
 
-        executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
         NetworkThread networkThread = NetworkThread.getInstance();
         networkThread.connect("localhost");
 
         executorService.submit(networkThread);
 
-        background = new Rectangle(Constants.PADDING, Constants.PADDING, Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        background.setColor(Constants.BACKGROUND_COLOR);
-        background.fill();
-
-        pausedText = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2, "PAUSE");
-        pausedText.setColor(Color.LIGHT_GRAY);
-        pausedText.translate(-pausedText.getWidth() / 2, -pausedText.getHeight() / 2);
-        pausedText.grow(pausedText.getWidth() * 3, pausedText.getHeight() * 3);
-
-        startText = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2 - 30, "GAME");
-        startText.setColor(Color.LIGHT_GRAY);
-
-        overText = new Text[2];
-
-        overText[0] = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2 - 30, "GAME");
-        overText[1] = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2 + 30, "OVER");
-
-        overText[0].setColor(Color.LIGHT_GRAY);
-        overText[1].setColor(Color.LIGHT_GRAY);
-
-        overText[0].translate(-overText[0].getWidth() / 2, -overText[0].getHeight() / 2);
-        overText[1].translate(-overText[1].getWidth() / 2, overText[1].getHeight() / 2);
-
-        overText[0].grow(overText[0].getWidth() * 3, overText[0].getHeight() * 3);
-        overText[1].grow(overText[1].getWidth() * 3, overText[1].getHeight() * 3);
-
-        
+        hud = new HUD();
 
         grid = new Grid(10, 20);
         activeBlock = BlockFactory.getBlock(grid);
@@ -82,7 +64,10 @@ public class Game {
         end = false;
 
         score = 0;
-        updateScore();
+
+        hud.init();
+
+        hud.updateScore(score);
     }
 
     public void start() {
@@ -100,7 +85,7 @@ public class Game {
             if (!paused && !end) {
                 if (activeBlock.hitBottom()) {
                     score += grid.checkLines();
-                    updateScore();
+                    hud.updateScore(score);
 
                     activeBlock = BlockFactory.getBlock(grid);
 
@@ -119,20 +104,11 @@ public class Game {
         }
     }
 
-    private void updateScore() {
 
-        if (scoreText != null) {
-            scoreText.delete();
-        }
-
-        scoreText = new Text(Constants.PADDING + 10, Constants.PADDING + 10, "Score: " + score);
-        scoreText.setColor(Color.WHITE);
-        scoreText.draw();
-    }
 
     private void gameOver() {
-        overText[0].draw();
-        overText[1].draw();
+
+        hud.drawOverText();
 
         activeBlock.erase();
     }
@@ -148,11 +124,11 @@ public class Game {
         keyboardListener.setBlock(activeBlock);
 
         score = 0;
-        updateScore();
+        hud.updateScore(score);
 
         end = false;
-        overText[0].delete();
-        overText[1].delete();
+
+        hud.deleteOverText();
     }
 
     public boolean isPaused() {
@@ -160,20 +136,32 @@ public class Game {
     }
 
     public void pause() {
+
         if (end) {
             return;
         }
 
-        pausedText.draw();
+        hud.drawOverText();
         paused = true;
     }
 
     public void unPause() {
-        pausedText.delete();
+
+        hud.drawOverText();
         paused = false;
     }
 
     public void showStart() {
-        startText.draw();
+        hud.startTimerText();
     }
+
+    /*public void insertNewBlock(BlockType blockType) {
+        Block block = BlockFactory.getBlock(grid);
+
+        NetworkThread.getInstance().sendEvent(GameEventFactory.blockSpawnEvent(block.));
+
+    }*/
+
+
+
 }

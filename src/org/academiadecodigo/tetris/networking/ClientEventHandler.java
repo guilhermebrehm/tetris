@@ -1,6 +1,7 @@
 package org.academiadecodigo.tetris.networking;
 
 import org.academiadecodigo.tetris.Constants;
+import org.academiadecodigo.tetris.Game;
 import org.academiadecodigo.tetris.Utils;
 import org.academiadecodigo.tetris.event.GameEvent;
 import org.academiadecodigo.tetris.event.GameEventType;
@@ -21,7 +22,11 @@ public class ClientEventHandler {
 
             case GAME_START:
 
-                System.out.println("game start");
+                Game.getInstance().showStart();
+                break;
+
+            case BLOCK_SPAWN:
+
                 break;
         }
     }

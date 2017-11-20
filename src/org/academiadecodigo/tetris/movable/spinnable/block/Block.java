@@ -14,6 +14,7 @@ public abstract class Block implements Spinnable {
     protected Position[] positions;
     protected Rectangle[] representations;
     protected Direction state;
+    private BlockType type;
 
     public Block(int[][] positions, Color color, Grid grid) {
 
@@ -23,7 +24,6 @@ public abstract class Block implements Spinnable {
         for (int i = 0; i < positions.length; i++) {
             this.positions[i] = new Position(grid, this, positions[i][0], positions[i][1]);
         }
-
 
         // Create visual blocks
         representations = new Rectangle[positions.length];

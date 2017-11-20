@@ -6,5 +6,6 @@ package org.academiadecodigo.tetris.event;
 public enum GameEventType {
 
     START_TIMER,
-    GAME_START;
+    GAME_START,
+    BLOCK_SPAWN;
 }
