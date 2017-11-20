@@ -1,5 +1,6 @@
 package org.academiadecodigo.tetris.event;
 
+import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.direction.Direction;
 
 /**
@@ -16,5 +17,10 @@ public class BlockMoveEvent extends GameEvent{
 
     public Direction getDirection() {
         return direction;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + Constants.EVENT_DELIMITER + direction.ordinal();
     }
 }

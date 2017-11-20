@@ -29,7 +29,9 @@ public class Game {
 
     private Grid grid;
     private Grid otherPlayerGrid;
+
     private Block activeBlock;
+    private Block otherPlayerActiveBlock;
 
     private int score;
     private int otherPlayerScore;
@@ -50,12 +52,6 @@ public class Game {
 
     public void init() {
 
-        ExecutorService executorService = Executors.newCachedThreadPool();
-
-        NetworkThread networkThread = NetworkThread.getInstance();
-        networkThread.connect("localhost");
-
-        executorService.submit(networkThread);
 
         hud = new HUD();
 
@@ -76,6 +72,13 @@ public class Game {
         hud.init();
 
         hud.updateScore(score);
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
+        NetworkThread networkThread = NetworkThread.getInstance();
+        networkThread.connect("localhost");
+
+        executorService.submit(networkThread);
     }
 
     public void start() {
@@ -182,6 +185,22 @@ public class Game {
     public void insertOtherPlayerBlock(BlockType blockType) {
 
         BlockFactory.getBlockByType(blockType, otherPlayerGrid);
+    }
+
+    public void moveOtherPlayerBlock(Direction direction) {
+
+        switch (direction) {
+
+            case RIGHT:
+                otherPlayerActiveBlock.moveRight();
+                break;
+            case DOWN:
+                otherPlayerActiveBlock.moveDown();
+                break;
+            case LEFT:
+                otherPlayerActiveBlock.moveLeft();
+                break;
+        }
     }
 
 

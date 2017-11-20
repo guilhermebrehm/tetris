@@ -31,7 +31,12 @@ public class GameEventFactory {
             case BLOCK_SPAWN:
 
                 BlockType blockType = BlockType.values()[Integer.parseInt(eventParts[1])];
-                return blockSpawnEvent(blockType);
+                return new BlockSpawnEvent(blockType);
+
+            case BLOCK_MOVE:
+
+                Direction direction = Direction.values()[Integer.parseInt(eventParts[1])];
+                return new BlockMoveEvent(direction);
         }
 
         throw new IllegalArgumentException();

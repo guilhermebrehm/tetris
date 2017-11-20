@@ -5,7 +5,10 @@ import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 import org.academiadecodigo.tetris.Game;
+import org.academiadecodigo.tetris.direction.Direction;
+import org.academiadecodigo.tetris.event.GameEventFactory;
 import org.academiadecodigo.tetris.movable.spinnable.block.Block;
+import org.academiadecodigo.tetris.networking.NetworkThread;
 
 public class KeyboardListener implements KeyboardHandler {
 
@@ -71,6 +74,7 @@ public class KeyboardListener implements KeyboardHandler {
                     return;
                 }
 
+                NetworkThread.getInstance().sendEvent(GameEventFactory.blockMoveEvent(Direction.RIGHT));
                 block.moveRight();
                 break;
 
@@ -79,6 +83,7 @@ public class KeyboardListener implements KeyboardHandler {
                     return;
                 }
 
+                NetworkThread.getInstance().sendEvent(GameEventFactory.blockMoveEvent(Direction.LEFT));
                 block.moveLeft();
                 break;
 
@@ -87,6 +92,7 @@ public class KeyboardListener implements KeyboardHandler {
                     return;
                 }
 
+                NetworkThread.getInstance().sendEvent(GameEventFactory.blockMoveEvent(Direction.DOWN));
                 block.moveDown();
                 break;
 
