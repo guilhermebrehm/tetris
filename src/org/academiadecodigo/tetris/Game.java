@@ -2,6 +2,8 @@ package org.academiadecodigo.tetris;
 
 import org.academiadecodigo.simplegraphics.graphics.Color;
 import org.academiadecodigo.simplegraphics.graphics.Text;
+import org.academiadecodigo.tetris.direction.Direction;
+import org.academiadecodigo.tetris.event.BlockMoveEvent;
 import org.academiadecodigo.tetris.event.GameEventFactory;
 import org.academiadecodigo.tetris.gui.HUD;
 import org.academiadecodigo.tetris.movable.spinnable.block.Block;
@@ -10,6 +12,7 @@ import org.academiadecodigo.tetris.grid.Grid;
 import org.academiadecodigo.tetris.keyboard_listener.KeyboardListener;
 import org.academiadecodigo.tetris.movable.spinnable.block.BlockType;
 import org.academiadecodigo.tetris.networking.NetworkThread;
+import sun.nio.ch.Net;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,9 +28,11 @@ public class Game {
     private HUD hud;
 
     private Grid grid;
+    private Grid otherPlayerGrid;
     private Block activeBlock;
 
     private int score;
+    private int otherPlayerScore;
 
     private static Game game;
 
@@ -55,6 +60,9 @@ public class Game {
         hud = new HUD();
 
         grid = new Grid(10, 20);
+
+        otherPlayerGrid = new Grid(10, 20, Constants.SEPARATOR_XMIN + Constants.SEPARATOR_WIDTH);
+
         activeBlock = BlockFactory.getBlock(grid);
 
         keyboardListener = new KeyboardListener(this);
@@ -83,21 +91,20 @@ public class Game {
         while (true) {
 
             if (!paused && !end) {
-                if (activeBlock.hitBottom()) {
+                if (activeBlockHitBottom()) {
                     score += grid.checkLines();
                     hud.updateScore(score);
 
-                    activeBlock = BlockFactory.getBlock(grid);
+                    newBlock();
 
-                    if (activeBlock.hitBottom()) {
+                    if (activeBlockHitBottom()) {
                         gameOver();
                         end = true;
                     }
 
-                    keyboardListener.setBlock(activeBlock);
                 }
 
-                activeBlock.moveDown();
+                moveDownActiveBlock();
             }
 
             Thread.sleep(Constants.DELAY - score / Constants.LEVEL_SCORE * Constants.LEVEL_TIME_INCREASE);
@@ -109,19 +116,18 @@ public class Game {
     private void gameOver() {
 
         hud.drawOverText();
-
         activeBlock.erase();
     }
 
     public void restart() {
+
         if (paused) {
             return;
         }
 
         grid.reset();
 
-        activeBlock = BlockFactory.getBlock(grid);
-        keyboardListener.setBlock(activeBlock);
+        newBlock();
 
         score = 0;
         hud.updateScore(score);
@@ -155,13 +161,28 @@ public class Game {
         hud.startTimerText();
     }
 
-    /*public void insertNewBlock(BlockType blockType) {
-        Block block = BlockFactory.getBlock(grid);
+    private void newBlock() {
 
-        NetworkThread.getInstance().sendEvent(GameEventFactory.blockSpawnEvent(block.));
+        activeBlock = BlockFactory.getBlock(grid);
+        NetworkThread.getInstance().sendEvent(GameEventFactory.blockSpawnEvent(activeBlock.getType()));
+        keyboardListener.setBlock(activeBlock);
+    }
 
-    }*/
+    private void moveDownActiveBlock() {
 
+        activeBlock.moveDown();
+        NetworkThread.getInstance().sendEvent(GameEventFactory.blockMoveEvent(Direction.DOWN));
+    }
+
+    private boolean activeBlockHitBottom() {
+
+        return activeBlock.hitBottom();
+    }
+
+    public void insertOtherPlayerBlock(BlockType blockType) {
+
+        BlockFactory.getBlockByType(blockType, otherPlayerGrid);
+    }
 
 
 }

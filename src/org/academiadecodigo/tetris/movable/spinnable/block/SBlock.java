@@ -15,7 +15,7 @@ public class SBlock extends Block{
                 {0, 0},
                 {0, 1}, {1, 1},
                         {1, 2}
-        }, Color.GREEN, grid);
+        }, BlockType.SBLOCK, Color.GREEN, grid);
 
         state = Direction.UP;
     }

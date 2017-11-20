@@ -19,4 +19,9 @@ public class BlockSpawnEvent extends GameEvent{
     public String toString() {
         return super.toString() + Constants.EVENT_DELIMITER + blockType.ordinal();
     }
+
+
+    public BlockType getBlockType() {
+        return blockType;
+    }
 }

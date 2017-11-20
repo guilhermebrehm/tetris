@@ -13,13 +13,12 @@ import java.util.TimerTask;
  */
 public class HUD {
 
-    private Rectangle background;
-
     private Text pausedText;
 
     private Text[] overText;
 
     private Text scoreText;
+    private Text otherPlayerScoreText;
 
     private Text[] timerText;
 
@@ -27,9 +26,13 @@ public class HUD {
 
     public void init() {
 
-        background = new Rectangle(Constants.PADDING, Constants.PADDING, Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        Rectangle background = new Rectangle(Constants.PADDING, Constants.PADDING, Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         background.setColor(Constants.BACKGROUND_COLOR);
         background.fill();
+
+        Rectangle separator = new Rectangle(Constants.SEPARATOR_XMIN, Constants.PADDING, Constants.SEPARATOR_WIDTH, Constants.GAME_HEIGHT);
+        separator.setColor(Color.WHITE);
+        separator.fill();
 
         pausedText = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2, "PAUSE");
         pausedText.setColor(Color.LIGHT_GRAY);
@@ -44,7 +47,7 @@ public class HUD {
         timerText[2] = new Text(Constants.GAME_WIDTH / 2, Constants.GAME_HEIGHT / 2 - 30, "1");
         timerText[2].setColor(Color.LIGHT_GRAY);
 
-        timerIndex = -0;
+        timerIndex = 0;
 
         overText = new Text[2];
 
@@ -78,7 +81,15 @@ public class HUD {
             scoreText.delete();
         }
 
+        if (otherPlayerScoreText != null) {
+            otherPlayerScoreText.delete();
+        }
+
         scoreText = new Text(Constants.PADDING + 10, Constants.PADDING + 10, "Score: " + score);
+        scoreText.setColor(Color.WHITE);
+        scoreText.draw();
+
+        otherPlayerScoreText = new Text(Constants.SEPARATOR_XMIN + Constants.SEPARATOR_WIDTH + 10, Constants.PADDING + 10, "Score: " + score);
         scoreText.setColor(Color.WHITE);
         scoreText.draw();
     }

@@ -8,7 +8,12 @@ public abstract class BlockFactory {
 
         BlockType rand = BlockType.getRandom();
 
-        switch (rand) {
+        return getBlockByType(rand, grid);
+    }
+
+    public static Block getBlockByType(BlockType type, Grid grid) {
+
+        switch (type) {
             case IBLOCK:
                 return new IBlock(grid);
 
@@ -31,6 +36,6 @@ public abstract class BlockFactory {
                 return new Square(grid);
         }
 
-        return new Square(grid);
+        return null;
     }
 }

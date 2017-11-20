@@ -9,7 +9,7 @@ public class Square extends Block {
         super(new int[][]{
                 {0, 0}, {1, 0},
                 {0, 1}, {1, 1}
-        }, Color.CYAN, grid);
+        }, BlockType.SQUARE, Color.CYAN, grid);
     }
 
     @Override

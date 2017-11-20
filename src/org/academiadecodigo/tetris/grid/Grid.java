@@ -7,9 +7,15 @@ import org.academiadecodigo.tetris.position.Position;
 public class Grid {
 
     private Position[][] spaces;
+    private int offset;
+
+    public Grid(int cols, int rows, int offset) {
+        spaces = new Position[cols][rows];
+        this.offset = offset;
+    }
 
     public Grid(int cols, int rows) {
-        spaces = new Position[cols][rows];
+        this(cols, rows, 0);
     }
 
     public boolean freeSpaceAt(Block block, int col, int row) {
@@ -94,5 +100,9 @@ public class Grid {
                 }
             }
         }
+    }
+
+    public int getOffset() {
+        return offset;
     }
 }

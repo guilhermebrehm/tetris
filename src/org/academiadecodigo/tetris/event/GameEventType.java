@@ -7,5 +7,6 @@ public enum GameEventType {
 
     START_TIMER,
     GAME_START,
-    BLOCK_SPAWN;
+    BLOCK_SPAWN,
+    BLOCK_MOVE
 }

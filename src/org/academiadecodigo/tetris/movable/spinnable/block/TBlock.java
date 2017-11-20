@@ -14,7 +14,7 @@ public class TBlock extends Block{
         super(new int[][]{
                 {0, 0}, {1, 0}, {2, 0},
                         {1, 1}
-        }, Color.GRAY, grid);
+        }, BlockType.TBLOCK, Color.GRAY, grid);
 
         state = Direction.UP;
     }

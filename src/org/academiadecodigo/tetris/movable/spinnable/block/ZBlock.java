@@ -12,7 +12,7 @@ public class ZBlock extends Block {
                         {1, 0},
                 {1, 1}, {0, 1},
                 {0, 2}
-        }, Color.BLUE, grid);
+        }, BlockType.ZBLOCK, Color.BLUE, grid);
 
         state = Direction.UP;
     }

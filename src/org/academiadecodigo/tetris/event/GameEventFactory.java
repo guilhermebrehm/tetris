@@ -2,6 +2,7 @@ package org.academiadecodigo.tetris.event;
 
 import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.Utils;
+import org.academiadecodigo.tetris.direction.Direction;
 import org.academiadecodigo.tetris.movable.spinnable.block.Block;
 import org.academiadecodigo.tetris.movable.spinnable.block.BlockType;
 
@@ -50,5 +51,10 @@ public class GameEventFactory {
     public static BlockSpawnEvent blockSpawnEvent(BlockType blockType) {
 
         return new BlockSpawnEvent(blockType);
+    }
+
+    public static BlockMoveEvent blockMoveEvent(Direction direction) {
+
+        return new BlockMoveEvent(direction);
     }
 }

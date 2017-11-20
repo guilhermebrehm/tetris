@@ -16,10 +16,12 @@ public abstract class Block implements Spinnable {
     protected Direction state;
     private BlockType type;
 
-    public Block(int[][] positions, Color color, Grid grid) {
+    public Block(int[][] positions, BlockType blockType, Color color, Grid grid) {
 
         // Create logical positions
         this.positions = new Position[positions.length];
+
+        this.type = blockType;
 
         for (int i = 0; i < positions.length; i++) {
             this.positions[i] = new Position(grid, this, positions[i][0], positions[i][1]);
@@ -29,7 +31,7 @@ public abstract class Block implements Spinnable {
         representations = new Rectangle[positions.length];
 
         for (int i = 0; i < positions.length; i++) {
-            representations[i] = new Rectangle(UnitConverter.colToX(positions[i][0]) + Constants.CELL_PADDING, UnitConverter.rowToY(positions[i][1]) + Constants.CELL_PADDING, Constants.CELL_SIZE - 2 * Constants.CELL_PADDING, Constants.CELL_SIZE - 2 * Constants.CELL_PADDING);
+            representations[i] = new Rectangle(UnitConverter.colToX(positions[i][0]) + Constants.CELL_PADDING + grid.getOffset(), UnitConverter.rowToY(positions[i][1]) + Constants.CELL_PADDING, Constants.CELL_SIZE - 2 * Constants.CELL_PADDING, Constants.CELL_SIZE - 2 * Constants.CELL_PADDING);
             representations[i].setColor(color);
             representations[i].fill();
         }
@@ -133,5 +135,9 @@ public abstract class Block implements Spinnable {
         for (Rectangle r : representations) {
             r.delete();
         }
+    }
+
+    public BlockType getType() {
+        return type;
     }
 }

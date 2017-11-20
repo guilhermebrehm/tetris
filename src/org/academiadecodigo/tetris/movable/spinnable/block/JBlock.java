@@ -12,7 +12,7 @@ public class JBlock extends Block{
                         {1, 0},
                         {1, 1},
                 {1, 2}, {0, 2}
-        }, Color.MAGENTA, grid);
+        }, BlockType.JBLOCK, Color.MAGENTA, grid);
 
         state = Direction.UP;
     }

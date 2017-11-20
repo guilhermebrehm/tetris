@@ -13,7 +13,7 @@ public class IBlock extends Block {
                 {0, 1},
                 {0, 2},
                 {0, 3}
-        }, Color.RED, grid);
+        }, BlockType.IBLOCK, Color.RED, grid);
 
         state = Direction.UP;
     }

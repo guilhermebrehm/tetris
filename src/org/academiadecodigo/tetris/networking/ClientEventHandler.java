@@ -3,6 +3,7 @@ package org.academiadecodigo.tetris.networking;
 import org.academiadecodigo.tetris.Constants;
 import org.academiadecodigo.tetris.Game;
 import org.academiadecodigo.tetris.Utils;
+import org.academiadecodigo.tetris.event.BlockSpawnEvent;
 import org.academiadecodigo.tetris.event.GameEvent;
 import org.academiadecodigo.tetris.event.GameEventType;
 
@@ -17,17 +18,23 @@ public class ClientEventHandler {
 
             case START_TIMER:
 
-                System.out.println("start timer");
+                Game.getInstance().showStart();
                 break;
 
             case GAME_START:
 
-                Game.getInstance().showStart();
                 break;
 
             case BLOCK_SPAWN:
 
+                handleBlockSpawnEvent((BlockSpawnEvent) gameEvent);
                 break;
+
         }
+    }
+
+    private static void handleBlockSpawnEvent(BlockSpawnEvent event) {
+
+        Game.getInstance().insertOtherPlayerBlock(event.getBlockType());
     }
 }
