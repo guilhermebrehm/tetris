@@ -94,6 +94,8 @@ public class Server {
 
         for (ClientHandler clientHandler: clientHandlers) {
 
+            System.out.println("broadcasting: " + event.toString());
+
             clientHandler.sendEvent(event);
         }
     }

@@ -42,8 +42,12 @@ public class NetworkThread implements Runnable {
 
                 while((str = reader.readLine()) != null) {
 
+                    System.out.println("received: " + str);
+
                     ClientEventHandler.handleEvent(GameEventFactory.getEventByString(str));
                 }
+
+                System.out.println("beep");
             }
 
         } catch (IOException e) {
@@ -54,9 +58,15 @@ public class NetworkThread implements Runnable {
 
     public void sendEvent(GameEvent gameEvent) {
 
+        if(socket.isClosed()) {
+            System.out.println("closed");
+        }
+
         try {
 
             PrintWriter writer = new PrintWriter(socket.getOutputStream());
+
+            System.out.println("sending: "+ gameEvent.toString());
 
             writer.write(gameEvent.toString());
             writer.flush();

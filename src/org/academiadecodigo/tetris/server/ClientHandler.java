@@ -28,6 +28,8 @@ public class ClientHandler implements Runnable{
 
                 if(!socket.isClosed()) {
 
+                    System.out.println("received: " + str);
+
                     Server.getInstance().broadcast(GameEventFactory.getEventByString(str));
                 }
             }
